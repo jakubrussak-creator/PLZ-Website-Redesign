@@ -248,12 +248,4 @@ function initPolandMap() {
   map.appendChild(card);
 }
 
-function initOrgsListing() {
-  const listing = document.querySelector('[data-orgs-listing]');
-  if (!listing) return;
-  const orgs = TRUSTED_CITIES.flatMap((city) => city.orgs);
-  orgs.forEach((org) => listing.appendChild(buildOrgCard(org, 'listing')));
-}
-
 initPolandMap();
-initOrgsListing();
