@@ -1,9 +1,7 @@
 import { initNavbar } from './navbar.js';
 import { createPeekCarousel } from './carousel.js';
-import { renderModuleCards } from './modules-data.js';
 
 initNavbar();
-renderModuleCards();
 
 // ---------- Persona switcher ----------
 function initPersonaSwitcher() {
@@ -26,6 +24,26 @@ function initPersonaSwitcher() {
   });
 }
 initPersonaSwitcher();
+
+// ---------- Module card tooltip clamping (keeps tooltips on-screen) ----------
+function clampTooltipPosition(event) {
+  const card = event.target.closest('.module-card');
+  if (!card) return;
+  const tooltip = card.querySelector('.module-card__tooltip');
+  if (!tooltip) return;
+  tooltip.style.removeProperty('--tooltip-shift');
+  const margin = 12;
+  const rect = tooltip.getBoundingClientRect();
+  let shift = 0;
+  if (rect.left < margin) shift = margin - rect.left;
+  else if (rect.right > window.innerWidth - margin) shift = window.innerWidth - margin - rect.right;
+  if (shift) tooltip.style.setProperty('--tooltip-shift', `${shift}px`);
+}
+const desktopGrid = document.getElementById('modules-grid-desktop');
+if (desktopGrid) {
+  desktopGrid.addEventListener('mouseover', clampTooltipPosition);
+  desktopGrid.addEventListener('focusin', clampTooltipPosition);
+}
 
 // ---------- Carousels (mobile Values + mobile Moduły + Testimonials) ----------
 function setup(id, opts) {
